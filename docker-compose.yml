@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: cep_mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: teste123
+      MYSQL_DATABASE: seguradora_db
+    ports:
+      - "3307:3306"  # host:container
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  wiremock:
+    image: wiremock/wiremock:2.35.0
+    container_name: cep_wiremock
+    restart: unless-stopped
+    ports:
+      - "8081:8080"  # host:container (evita conflito com Spring Boot)
+    volumes:
+      - ./src/main/resources/wiremock/mappings:/home/wiremock/mappings:ro
+    command: ["--verbose"]
+
+volumes:
+  mysql_data:

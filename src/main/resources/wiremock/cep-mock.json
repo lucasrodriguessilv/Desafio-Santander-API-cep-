@@ -1,0 +1,16 @@
+{
+  "request": {
+    "method": "GET",
+    "urlPattern": "/externo/cep/([0-9]{8})"
+  },
+  "response": {
+    "status": 200,
+    "jsonBody": {
+      "cep": "01001-000",
+      "logradouro": "Praça da Sé",
+      "bairro": "Sé",
+      "localidade": "São Paulo",
+      "uf": "SP"
+    }
+  }
+}
