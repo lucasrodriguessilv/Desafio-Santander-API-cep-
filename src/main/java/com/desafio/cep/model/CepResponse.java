@@ -14,7 +14,5 @@ public class CepResponse {
     private String bairro;
     private String localidade;
     private String uf;
-
-
 }
 

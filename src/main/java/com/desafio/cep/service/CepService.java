@@ -20,6 +20,18 @@ public class CepService implements ICepService {
     @Autowired
     private ConsultaLogRepository logRepository;
 
+    @Autowired
+    private ConsultaLogRepository consultaLogRepository;
+
+
+    @Override
+    public ConsultaLog criar(ConsultaLog log) {
+        log.setId(null); // garante criação
+        log.setDataConsulta(LocalDateTime.now());
+        return consultaLogRepository.save(log);
+    }
+
+
     @Override
     public CepResponse buscarCep(String cep) {
         CepResponse resposta = viaCepClient.buscarCep(cep);

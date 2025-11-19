@@ -1,10 +1,11 @@
 package com.desafio.cep.service;
-
 import com.desafio.cep.model.CepResponse;
 import com.desafio.cep.model.ConsultaLog;
 import java.util.List;
 
 public interface ICepService {
+
+    ConsultaLog criar(ConsultaLog log);
 
     CepResponse buscarCep(String cep);
 

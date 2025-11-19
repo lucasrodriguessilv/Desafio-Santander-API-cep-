@@ -20,3 +20,4 @@ public class ConsultaLog {
 
     private LocalDateTime dataConsulta;
 }
+
