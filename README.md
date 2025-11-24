@@ -27,7 +27,7 @@ Utiliza arquitetura em camadas e princípios SOLID.
 <br> H2 Database: armazenamento das consultas em memória
 # API Mockada (WireMock)
 <br> A aplicação pode usar mock apontando o client para:
-<br> http://localhost:8089/ws/{cep}/json
+<br> rodar $ java -jar wiremock-standalone-3.3.1.jar --port 8089
 # Armazenamento dos Logs
 <br> Cada consulta salva:
 <br> CEP solicitado
