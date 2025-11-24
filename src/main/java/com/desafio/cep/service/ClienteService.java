@@ -18,37 +18,53 @@ public class ClienteService {
 
     // CREATE (POST)
     public Cliente save(Cliente cliente) {
-        // Exemplo de lógica de negócio: Garantir que o email não seja duplicado
-        if (clienteRepository.findByEmail(cliente.getEmail()) != null) {
+
+        // Evitar problema: se ID vier 0, tratamos como null (novo cliente)
+        if (cliente.getId() != null && cliente.getId() == 0) {
+            cliente.setId(null);
+        }
+
+        // Verifica duplicidade de e-mail somente em criação
+        if (cliente.getId() == null && clienteRepository.findByEmail(cliente.getEmail()) != null) {
             throw new IllegalArgumentException("O e-mail informado já está cadastrado.");
         }
+
         return clienteRepository.save(cliente);
     }
 
-    // LISTAR TODOS OS CLIENTES (GET)
+    // LISTAR TODOS OS CLIENTES
     public List<Cliente> findAll() {
         return clienteRepository.findAll();
     }
 
-    // LISTAR POR ID (GET)
+    // BUSCAR POR ID
     public Optional<Cliente> findById(Long id) {
         return clienteRepository.findById(id);
     }
 
-    // ATUALIZAR (PUT) - Usa o método save, mas com verificação de existência
+    // UPDATE (PUT)
     public Cliente update(Long id, Cliente updatedCliente) {
+
         return clienteRepository.findById(id)
                 .map(clienteExistente -> {
-                    // Mapeamento de campos
+
+                    // Verifica se o novo e-mail já pertence a outro cliente
+                    Cliente clienteComEmail = clienteRepository.findByEmail(updatedCliente.getEmail());
+                    if (clienteComEmail != null && !clienteComEmail.getId().equals(id)) {
+                        throw new IllegalArgumentException("O e-mail informado já está sendo usado por outro cliente.");
+                    }
+
+                    // Atualiza os dados
                     clienteExistente.setNome(updatedCliente.getNome());
                     clienteExistente.setEmail(updatedCliente.getEmail());
                     clienteExistente.setTelefone(updatedCliente.getTelefone());
+
                     return clienteRepository.save(clienteExistente);
                 })
                 .orElseThrow(() -> new IllegalArgumentException("Cliente com ID " + id + " não encontrado."));
     }
 
-    // EXCUIR (DELETE)
+    // DELETE
     public void deleteById(Long id) {
         clienteRepository.deleteById(id);
     }
